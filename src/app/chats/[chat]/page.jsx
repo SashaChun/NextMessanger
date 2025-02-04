@@ -84,7 +84,7 @@ export default function Chat() {
                 <div>
                     <div
                         className={'flex space-x-3 flex-row  hover:bg-[#25262d] opacity-80 items-center justify-center p-3 rounded-[100%]'}>
-                    <Image   src={dots} width={20} height={20} alt={'dots'} className="h-[24px] w-[24px]"/>
+                    <Image onClick={()=>show(true)}  src={dots} width={20} height={20} alt={'dots'} className="h-[24px] w-[24px]"/>
                     </div>
                 </div>
             </div>
@@ -120,6 +120,6 @@ export default function Chat() {
             </div>
         </div>
         <div className="w-[2px] bg-[#2b2c2f]  cursor-col-resize" onMouseDown={() => handleMouseDown("right")}></div>
-        {showInfo && <ContactInfo currentUser={currentUser} Close={()=>show(false)} rightWidth={rightWidth}/>}
+        {showInfo && <ContactInfo Close={()=>show(true)} currentUser={''}  rightWidth={rightWidth}/>}
     </div>
 }

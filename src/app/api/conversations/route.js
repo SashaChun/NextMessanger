@@ -2,23 +2,24 @@ import { getCurrentUser } from "../../../../actions/getCurrantUser";
 import { NextResponse } from "next/server";
 import prisma from '../../../../libe/prismadb'
 
-// src/app/api/conversation/route.js
-
-// ... інші імпорти
-
 export async function POST(request) {
     try {
         const currentUser = await getCurrentUser();
         const body = await request.json();
 
-        const { userId, isGroup, members, name } = body;
+        const {
+            userId,
+            isGroup,
+            members,
+            name
+        } = body;
 
         if (!currentUser?.id || !currentUser?.email) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
         if (isGroup && (!members || members.length < 2 || !name)) {
-            return new NextResponse('Invalid group data', { status: 400 });
+            return new NextResponse('Internal data', { status: 400 });
         }
 
         if (isGroup) {
@@ -26,51 +27,52 @@ export async function POST(request) {
                 data: {
                     name,
                     isGroup,
-                    userIds: [...members.map(member => member.value), currentUser.id],
                     users: {
                         connect: [
-                            ...members.map(member => ({ id: member.value })),
+                            ...members.map((member) => ({
+                                id: member.value
+                            })),
                             { id: currentUser.id }
                         ]
                     }
                 },
-                include: { users: true }
+                include: {
+                    users: true
+                }
             });
+
             return NextResponse.json(newConversation);
         }
 
-        // Пошук існуючих індивідуальних бесід
         const existingConversations = await prisma.conversation.findMany({
             where: {
-                AND: [
-                    { userIds: { has: currentUser.id } },
-                    { userIds: { has: userId } },
-                    { isGroup: false }
+                OR: [
+                    { userIds: { equals: [currentUser.id, userId] } },
+                    { userIds: { equals: [userId, currentUser.id] } }
                 ]
-            },
-            include: { users: true }
+            }
         });
 
         const singleConversation = existingConversations[0];
-        if (singleConversation) return NextResponse.json(singleConversation);
 
-        // Створення нової бесіди
+        if (singleConversation) {
+            return NextResponse.json(singleConversation);
+        }
+
         const newConversation = await prisma.conversation.create({
             data: {
-                userIds: [currentUser.id, userId],
                 users: {
                     connect: [
                         { id: currentUser.id },
                         { id: userId }
                     ]
                 }
-            },
-            include: { users: true }
+            }
         });
 
         return NextResponse.json(newConversation);
     } catch (error) {
-        console.error('Error creating conversation:', error);
+        console.error(error); // Log the error for debugging
         return new NextResponse('Internal Error', { status: 500 });
     }
 }

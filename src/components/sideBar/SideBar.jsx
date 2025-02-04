@@ -5,14 +5,16 @@ import Image from "next/image";
 import addChat from "../../../public/Group.png";
 import dots from "../../../public/more-2-line.png";
 import lupa from "../../../public/Vector.png";
+import noImagePick from '../../components/sideBar/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'
+import SideBarMessage from "@/components/sideBar/SideBarMessage";
+import SideBarPeople from "@/components/sideBar/SideBarPeople";
 
-export default  function SideBar ({children}){
+export default  function SideBar ({users ,children}){
     const [leftWidth, setLeftWidth] = useState(25);
     const [rightWidth, setRightWidth] = useState(20);
     const isResizingLeft = useRef(false);
     const isResizingRight = useRef(false);
     const inputRef = useRef(null);
-
     const [filterUsers  , setFilterUsers] = useState([]);
 
     const handleMouseMove = (e) => {
@@ -40,6 +42,8 @@ export default  function SideBar ({children}){
         document.addEventListener("mouseup", handleMouseUp);
     };
 
+
+
     // const images = users.slice(0, 5).flatMap(user => [user.photo, user.photo]);
     //
     // function Filter() {
@@ -63,12 +67,12 @@ export default  function SideBar ({children}){
                 <div className="flex p-[15px] justify-center flex-col">
                     <div className="flex flex-row justify-between items-center">
                         <Image
-                            src={users[0].photo}
+                            src={'' || noImagePick}
                             className="w-[48px] border-2 border-gray-800 h-[48px] rounded-full bg-white flex-shrink-0"
                             alt="image"
                         />
                         <div className="flex space-x-3 flex-row">
-                            <Image src={addChat} width={24} height={24} alt="addChat" className="h-[24px] w-[24px]" />
+                            <Image src={addChat}   width={24} height={24} alt="addChat" className="h-[24px] w-[24px]" />
                             <Image src={dots} width={20} height={20} alt="dots" className="h-[24px] w-[24px]" />
                         </div>
                     </div>
@@ -96,20 +100,8 @@ export default  function SideBar ({children}){
                 {/*    </div>*/}
                 {/*</div>}*/}
                 <div className="h-[1px] w-full bg-[#2b2c2f]"></div>
-                <div className="flex justify-center flex-col">
-                    <p className="text-2xl p-[15px]">Messages</p>
-                    <div>
-                        {/*{(filterUsers.length > 0 ? filterUsers : users).map((user, index) => (*/}
-                        {/*    <Message*/}
-                        {/*        key={index}*/}
-                        {/*        photo={user.photo}*/}
-                        {/*        name={user.name}*/}
-                        {/*        lastMessage={user.messages[user.messages.length - 1]?.received || ''}*/}
-                        {/*    />*/}
-                        {/*))}*/}
-                        <p className={'flex items-center justify-center h-[50vh]'}>No messages</p>
-                    </div>
-                </div>
+                   <SideBarMessage/> <SideBarPeople users={users}/>
+
             </div>
             <div className="w-[2px] bg-[#2b2c2f] cursor-col-resize" onMouseDown={() => handleMouseDown("left")}/>
             <div className="flex flex-1 flex-col justify-between">{children}</div>

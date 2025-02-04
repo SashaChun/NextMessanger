@@ -8,10 +8,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#141416",
+        foreground: "#1c1d22",
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms")({
+      strategy: "class",
+    }),
+  ],
 };
