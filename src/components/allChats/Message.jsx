@@ -20,7 +20,9 @@ export default function Message({ lastMessage, photo, name , find , data}) {
 
     const handleClick = useCallback(() => {
         setIsLoading(true);
-        axios.post('/api/conversations', { userId: data.id }) // Перевірте URL та параметр
+        axios.post('/api/conversations', { userId: data.id }, {
+            headers: { 'Content-Type': 'application/json' }
+        })
             .then((response) => {
                 router.push(`/conversations/${response.data.id}`);
             })
@@ -33,6 +35,9 @@ export default function Message({ lastMessage, photo, name , find , data}) {
     return (
         <div onClick={handleClick} className={'flex justify-start items-center hover:bg-[#141416] p-[15px] flex-row space-x-2'}>
             <Image
+
+
+
                 src={photo || noPhotoPic}
                 className={'w-[48px] border-2 border-gray-800 h-[48px] rounded-[100%] bg-white flex-shrink-0'}
                 alt="image"
