@@ -1,33 +1,23 @@
-import { getServerSession } from "next-auth/next";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
-import prisma from "../libe/prismadb";
+import prisma from "../libe/prismadb.js";
+import getSession from "./getSession.js";
 
-export async function getCurrentUser() {
+const getCurrentUser = async () => {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.email) return null;
+        const session = await getSession();
 
-        const currentUser = await prisma.user.findUnique({
-            where: { email: session.user.email },
-        });
-
-        // Якщо користувача не знайдено
-        if (!currentUser) {
-            console.error("Користувача не існує");
+        if (!session || !session.user || !session.user.email) {
             return null;
         }
 
-        // Якщо updatedAt є null, встановіть поточну дату
-        if (currentUser.updatedAt === null) {
-            await prisma.user.update({
-                where: { id: currentUser.id },
-                data: { updatedAt: new Date() },
-            });
-        }
+        const currentUser = await prisma.user.findUnique({
+            where: { email: session.user.email }
+        });
 
-        return currentUser;
+        return currentUser || null;
     } catch (error) {
-        console.error("Помилка в getCurrentUser:", error);
+        console.error("Error fetching current user:", error);
         return null;
     }
-}
+};
+
+export default getCurrentUser;

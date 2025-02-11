@@ -71,12 +71,12 @@ export default function Chat() {
         <div className="flex flex-1 flex-col justify-between ">
             <div className={'flex justify-between items-center bg-[#2a2c33]'}>
                 <div className={'flex flex-row items-center  space-x-3 px-[20px] py-[10px]'}>
-                    <button
-                        onClick={handleLogout}
-                        className="w-full py-2 mt-4 bg-red-500 text-white rounded-lg shadow-md hover:shadow-lg focus:outline-none"
-                    >
-                        Log Out
-                    </button>
+                    {/*<button*/}
+                    {/*    onClick={handleLogout}*/}
+                    {/*    className="w-full py-2 mt-4 bg-red-500 text-white rounded-lg shadow-md hover:shadow-lg focus:outline-none"*/}
+                    {/*>*/}
+                    {/*    Log Out*/}
+                    {/*</button>*/}
                     {/*<Image src={currentUser[0].photo}*/}
                     {/*       className={'w-[48px] border-2 border-gray-800  h-[48px] rounded-[100%] bg-white flex-shrink-0'}*/}
                     {/*       alt="image"/>                    <p>{currentUser[0].name}</p>*/}
@@ -84,10 +84,12 @@ export default function Chat() {
                 <div>
                     <div
                         className={'flex space-x-3 flex-row  hover:bg-[#25262d] opacity-80 items-center justify-center p-3 rounded-[100%]'}>
-                    <Image onClick={()=>show(true)}  src={dots} width={20} height={20} alt={'dots'} className="h-[24px] w-[24px]"/>
+                        <Image onClick={() => show(true)} src={dots} width={20} height={20} alt={'dots'}
+                               className="h-[24px] w-[24px]"/>
                     </div>
                 </div>
             </div>
+
 
 
             <div className={'px-10  scroll-container  h-full  py-5'}>
@@ -103,6 +105,8 @@ export default function Chat() {
                 {/*}*/}
 
             </div>
+
+
 
             <div className="flex  w-[100%] px-6  flex-row items-center ">
                 <div className={'flex py-5 flex-row items-center space-x-3'}>
@@ -120,6 +124,6 @@ export default function Chat() {
             </div>
         </div>
         <div className="w-[2px] bg-[#2b2c2f]  cursor-col-resize" onMouseDown={() => handleMouseDown("right")}></div>
-        {showInfo && <ContactInfo Close={()=>show(true)} currentUser={''}  rightWidth={rightWidth}/>}
+        {showInfo && <ContactInfo Close={() => show(true)} currentUser={''} rightWidth={rightWidth}/>}
     </div>
 }

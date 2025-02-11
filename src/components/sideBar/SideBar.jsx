@@ -9,7 +9,7 @@ import noImagePick from '../../components/sideBar/360_F_186293166_P4yk3uXQBDapbD
 import SideBarMessage from "@/components/sideBar/SideBarMessage";
 import SideBarPeople from "@/components/sideBar/SideBarPeople";
 
-export default  function SideBar ({users ,children}){
+export default  function SideBar ({users  , conversations,children}){
     const [leftWidth, setLeftWidth] = useState(25);
     const [rightWidth, setRightWidth] = useState(20);
     const isResizingLeft = useRef(false);
@@ -100,7 +100,7 @@ export default  function SideBar ({users ,children}){
                 {/*    </div>*/}
                 {/*</div>}*/}
                 <div className="h-[1px] w-full bg-[#2b2c2f]"></div>
-                   <SideBarMessage/> <SideBarPeople users={users}/>
+                   <SideBarMessage conversations={conversations} /> <SideBarPeople users={users}/>
 
             </div>
             <div className="w-[2px] bg-[#2b2c2f] cursor-col-resize" onMouseDown={() => handleMouseDown("left")}/>

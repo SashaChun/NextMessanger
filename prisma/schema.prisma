@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,64 +15,63 @@ model User {
   image          String?
   hashedPassword String?
   createdAt      DateTime  @default(now())
-  updateAt       DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   conversationIds String[]       @db.ObjectId
-  conversation    Conversation[] @relation(fields: [conversationIds], references: [id])
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
 
-  seenMassageIds String[]  @db.ObjectId
-  seenMessages   Message[] @relation("Seen", fields: [seenMassageIds], references: [id])
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
 
   accounts Account[]
   messages Message[]
 }
 
 model Account {
-  id               String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId           String  @db.ObjectId
-  type             String
-  provider         String
-  providerAcountId String
-  refresh_token    String? @db.String
-  access_token     String? @db.String
-  expires_at       Int?
-  token_type       String?
-  score            String?
-  id_token         String? @db.String
-  session_state    String?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAcountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Conversation {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt     DateTime @default(now())
   lastMessageAt DateTime @default(now())
-  name          String
-  isGroup       Boolean
+  name          String?
+  isGroup       Boolean?
 
   messagesIds String[]  @db.ObjectId
-  message     Message[]
+  messages    Message[]
 
   userIds String[] @db.ObjectId
-  user    User[]   @relation(fields: [userIds], references: [id])
+  users   User[]   @relation(fields: [userIds], references: [id])
 }
 
-model Message {
+model UsersBox {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   body      String?
   image     String?
   createdAt DateTime @default(now())
 
   seenIds String[] @db.ObjectId
-  user    User[]   @relation("Seen", fields: [seenIds], references: [id])
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
 
-  conversationId String[]     @db.ObjectId
+  conversationId String       @db.ObjectId
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
-  senderIds String @db.ObjectId
-  sender    User   @relation(fields: [senderIds], references: [id], onDelete: Cascade)
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }

@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import noPhotoPic from '../sideBar/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'
- import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {useCallback, useState} from "react";
 import axios from "axios";
 
-export default function Message({ lastMessage, photo, name , find , data}) {
+export default function UsersBox({ lastMessage, photo, name , find , data}) {
     const router = useRouter();
 
     const getTime = () => {
@@ -16,21 +16,12 @@ export default function Message({ lastMessage, photo, name , find , data}) {
         return `${hours}:${minutes}`;
     };
 
-     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = useCallback(() => {
         setIsLoading(true);
-        axios.post('/api/conversations', { userId: data.id }, {
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then((response) => {
-                router.push(`/conversations/${response.data.id}`);
-            })
-            .catch((error) => {
-                console.error('Error creating conversations:', error);
-            })
-            .finally(() => setIsLoading(false));
-    }, [data, router]);
+        router.push(`/chats/${data.id}`);
+         });
 
     return (
         <div onClick={handleClick} className={'flex justify-start items-center hover:bg-[#141416] p-[15px] flex-row space-x-2'}>

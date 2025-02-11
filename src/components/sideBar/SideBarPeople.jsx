@@ -1,4 +1,4 @@
-import Message from "@/components/allChats/Message";
+import UsersBox from "@/components/allChats/UsersBox.jsx";
 
 export default   function SideBarPeople  ({users}) {
 
@@ -9,7 +9,7 @@ export default   function SideBarPeople  ({users}) {
         <div>
             {
                 users.map((event , index) => (
-                    <Message key={index} find={true} name={event.name} data = {event} />
+                    <UsersBox key={index} find={true} name={event.name} data = {event} />
                 ))
             }
         </div>
