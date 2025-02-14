@@ -1,20 +1,62 @@
-export default function ChatItem({Mymessage ,recive }){
-    if(recive){
-        return <div className={'w-[100%] flex justify-end'}>
-            <div className="relative bg-[#bdd2b6]  text-[#26272d] rounded-xl max-w-[80%] p-3
-         before:content-[''] before:absolute before:top-[10px] before:-right-[10px] before:w-0 before:h-0
-        before:border-t-[8px] before:border-t-transparent
-        before:border-b-[8px] before:border-b-transparent
-        before:border-l-[10px] before:border-[#bdd2b6]">
-                {Mymessage}
+"use client";
+
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useState } from "react";
+import {format} from "date-fns";
+
+const Message = ({ data = {}, isLast }) => {
+    const session = useSession();
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+
+    const isOwn = session?.data?.user?.email === data?.sender?.email;
+    const seenList = (data?.seen || [])
+        .filter((user) => user?.email !== data?.sender?.email)
+        .map((user) => user?.name)
+        .join(", ");
+
+    const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
+    const avatar = clsx(isOwn && "order-2");
+    const body = clsx("flex flex-col gap-2", isOwn && "items-end");
+    const message = clsx(
+        "text-sm w-fit overflow-hidden text-black",
+        isOwn ? "bg-[#c3d6bd] text-black" : "bg-[#3b3c42] text-white",
+        data?.image ? "rounded-md p-0" : "rounded-[10px] py-2 px-3"
+    );
+
+    return (
+        <div className={container}>
+            <div className={avatar}>{/* Avatar тут, если нужен */}</div>
+            <div className={body}>
+                <div className="flex items-center gap-1">
+                    <div className="text-sm text-gray-500">
+                        {data?.sender?.name || "Unknown"}
+                    </div>
+                    <div className="text-xs text-gray-400"> {format(new Date(data.createdAt), 'p')}</div>
+                </div>
+                <div className={message}>
+                    {data?.image ? (
+                        <Image
+                            onClick={() => setImageModalOpen(true)}
+                            alt="Image"
+                            height="288"
+                            width="288"
+                            src={data?.image}
+                            className="object-cover cursor-pointer hover:scale-110 transition translate"
+                        />
+                    ) : (
+                        <div>{data?.body || "No message"}</div>
+                    )}
+                </div>
+                {isLast && isOwn && seenList.length > 0 && (
+                    <div className="text-xs font-light text-gray-500">
+                        {`Seen by ${seenList}`}
+                    </div>
+                )}
             </div>
         </div>
-    }else {
-       return <div className={'w-[100%] flex justify-start'}>
-            <div
-                className="relative bg-[#26272d]  rounded-xl max-w-[80%] p-3 before:content-[''] before:absolute before:top-[10px] before:-left-[10px] before:w-0 before:h-0 before:border-t-[8px] before:border-t-transparent before:border-b-[8px] before:border-b-transparent before:border-r-[10px] before:border-[#26272d]">
-                {recive}
-            </div>
-        </div>
-    }
-}
+    );
+};
+
+export default Message;

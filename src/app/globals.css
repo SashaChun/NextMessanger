@@ -50,3 +50,10 @@ body {
 .scroll-container {
   overflow-x: hidden;
 }
+
+@keyframes fade {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0; }
+  50% { opacity: 0.5; }
+  75% { opacity: 0.75; }
+}

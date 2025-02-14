@@ -5,16 +5,11 @@ import noPhotoPic from '../sideBar/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0
  import { useRouter } from 'next/navigation';
 import {useCallback, useState} from "react";
 import axios from "axios";
+import { FaRegPaperPlane } from "react-icons/fa";
 
 export default function UsersBox({ lastMessage, photo, name , find , data}) {
     const router = useRouter();
 
-    const getTime = () => {
-        const date = new Date();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${hours}:${minutes}`;
-    };
 
      const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +35,6 @@ export default function UsersBox({ lastMessage, photo, name , find , data}) {
             <div className={'flex flex-col w-[100%] '}>
                 <div className={'flex justify-between'}>
                     <p>{name}</p>
-                    {!find && <p>{getTime()}</p>}
                 </div>
                 <div className="w-full relative overflow-hidden">
                     <p className="whitespace-nowrap overflow-hidden text-ellipsis">
@@ -49,7 +43,7 @@ export default function UsersBox({ lastMessage, photo, name , find , data}) {
                 </div>
             </div>
             <div>
-                {find && '=>'}
+                {find && <FaRegPaperPlane/>}
             </div>
         </div>
     );

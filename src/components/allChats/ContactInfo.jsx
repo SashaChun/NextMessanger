@@ -1,21 +1,23 @@
 import Image from "next/image";
 import x from "../../../public/x.png";
 import setening from "../../../public/settings-5-line.png";
-export default function ContactInfo({rightWidth ,currentUser , Close}) {
+import noPhotoPic from '../../components/sideBar/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'
+
+export default function ContactInfo({rightWidth ,currentUser , Close , conversations}) {
 
     return <div className="bg-foreground overflow-y-auto scroll-container min-h-screen border-2 border-[#2b2c2f]"
                 style={{width: `${rightWidth}vw`}}>
 
         <div className={'flex flex-row items-center  space-x-5 text-xl  px-[20px] py-[10px]'}>
-            <p className={'flex flex-row items-center h-[45px] w-[45px] hover:bg-[#25262d] opacity-80 justify-center p-3 rounded-[100%] '}><Image onClick={Close} src={x} alt={'x'}/></p>
+            <p className={'flex flex-row items-center h-[45px] w-[45px] hover:bg-[#25262d] opacity-80 justify-center p-3 rounded-[100%] '} onClick={Close}><Image src={x} alt={'x'}/></p>
             <p className={' flex flex-row items-center h-[45px]'}>Contact info</p>
         </div>
         <div className={'h-[1px] w-[100%] bg-[#2b2c2f]'}></div>
         <div className={'flex flex-col items-center'}>
-            <Image src={''}
+            <Image src={conversations.users[0].image || noPhotoPic}
                    className={'border-2 border-gray-800  w-[120px]  mt-[24px]  h-[120px]  rounded-[100%] bg-white flex-shrink-0'}
                    alt="image"/>
-            <p className={'mt-4 text-xl'}>{''}</p>
+            <p className={'mt-4 text-xl'}>{conversations.users[0].name}</p>
             <p className={'mt-2 text-sm'}>+49 1522 792358</p>
         </div>
         <div className={'h-[1px] w-[100%] mt-[24px] bg-[#2b2c2f]'}></div>

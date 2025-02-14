@@ -42,26 +42,10 @@ export default  function SideBar ({users  , conversations,children}){
         document.addEventListener("mouseup", handleMouseUp);
     };
 
-
-
-    // const images = users.slice(0, 5).flatMap(user => [user.photo, user.photo]);
-    //
-    // function Filter() {
-    //     if (!inputRef.current) return;
-    //
-    //     const filtered = users.filter((e) =>
-    //         e.name.toLowerCase().includes(inputRef.current.value.toLowerCase())
-    //     );
-    //
-    //     setFilterUsers(filtered);
-    // }
-    //
-    // console.log(filterUsers)
-
     return (
         <div className="flex justify-between h-screen">
             <div
-                className="bg-foreground overflow-y-auto scroll-container min-h-screen border-2 border-[#2b2c2f]"
+                className="bg-foreground  overflow-y-auto scroll-container min-h-screen border-2 border-[#2b2c2f]"
                 style={{ width: `${leftWidth}vw` }}
             >
                 <div className="flex p-[15px] justify-center flex-col">
@@ -101,7 +85,6 @@ export default  function SideBar ({users  , conversations,children}){
                 {/*</div>}*/}
                 <div className="h-[1px] w-full bg-[#2b2c2f]"></div>
                    <SideBarMessage conversations={conversations} /> <SideBarPeople users={users}/>
-
             </div>
             <div className="w-[2px] bg-[#2b2c2f] cursor-col-resize" onMouseDown={() => handleMouseDown("left")}/>
             <div className="flex flex-1 flex-col justify-between">{children}</div>
