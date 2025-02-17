@@ -1,18 +1,12 @@
 import bcrypt from 'bcrypt';
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-
-import prisma from '../../../../../libe/prismadb';
+import prisma from '../../../../../libe/prismadb.js'; // перевір шлях!
 
 export const authOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_SECRET,
-        }),
         CredentialsProvider({
             name: 'credentials',
             credentials: {
@@ -55,4 +49,5 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export   {handler as GET, handler as POST,};
+export const GET = handler;
+export const POST = handler;
