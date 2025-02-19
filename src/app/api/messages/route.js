@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../libe/prismadb.js";
 import {pusherServer}  from "../../../../libe/pucher.js";
 
-export default async function POST(request) {
+export async function POST(request) {
     try {
         const currentUser = await getCurrentUser();
         const body = await request.json();

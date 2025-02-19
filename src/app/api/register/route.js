@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../libe/prismadb"; // Шлях може відрізнятись
+import prisma from "../../../../libe/prismadb";
 import bcrypt from "bcrypt";
 
 export async function POST(request) {
