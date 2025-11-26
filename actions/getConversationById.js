@@ -1,4 +1,3 @@
-import prisma from '../libe/prismadb.js';
 import getCurrentUser from "./getCurrantUser.js";
 
 export default async function getConversationById(conversationID) {
@@ -9,6 +8,7 @@ export default async function getConversationById(conversationID) {
             return null;
         }
 
+        const { default: prisma } = await import('../libe/prismadb.js');
         const conversation = await prisma.conversation.findUnique({
             where: {
                 id: conversationID

@@ -1,10 +1,13 @@
-import getCurrentUser from "../../../../actions/getCurrantUser.js";
 import { NextResponse } from "next/server";
-import prisma from "../../../../libe/prismadb.js";
-import {pusherServer} from "../../../../libe/pucher.js";
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
     try {
+        const { default: getCurrentUser } = await import("../../../../actions/getCurrantUser.js");
+        const { default: prisma } = await import("../../../../libe/prismadb.js");
+        const { pusherServer } = await import("../../../../libe/pucher.js");
+        
         const currentUser = await getCurrentUser();
         const body = await request.json();
         const { userId, isGroup, members, name } = body;
@@ -32,11 +35,11 @@ export async function POST(request) {
                 include: { users: true }
             });
 
-            newConversation.users.forEach((user)=>{
-                if(user.email){
-                    pusherServer.trigger(user.email , 'conversation:new' , newConversation)
-                }
-            })
+            await Promise.all(
+                newConversation.users.map((user)=>
+                    user.email ? pusherServer.trigger(user.email , 'conversation:new' , newConversation) : Promise.resolve()
+                )
+            );
 
             return NextResponse.json(newConversation);
         }
@@ -59,11 +62,11 @@ export async function POST(request) {
             },
             include: { users: true }
         });
-        newConversation.users.map((user)=>{
-            if(user.email){
-                pusherServer.trigger(user.email , 'conversation:new' , newConversation)
-            }
-        })
+        await Promise.all(
+            newConversation.users.map((user)=>
+                user.email ? pusherServer.trigger(user.email , 'conversation:new' , newConversation) : Promise.resolve()
+            )
+        );
 
         return NextResponse.json(newConversation);
     } catch (error) {

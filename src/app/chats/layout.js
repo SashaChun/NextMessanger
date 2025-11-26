@@ -1,9 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import SideBar from "@/components/sideBar/SideBar";
-import getCurrentUser from "../../../actions/getCurrantUser.js";
-import getUsers from "../../../actions/getUsers.js";
-import getConversations from "../../../actions/getConversations.js";
+
+export const dynamic = 'force-dynamic';
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -16,12 +15,15 @@ const geistMono = Geist_Mono({
 });
 
 export default async function RootLayout({ children }) {
+    const { default: getCurrentUser } = await import("../../../actions/getCurrantUser.js");
+    const { default: getUsers } = await import("../../../actions/getUsers.js");
+    const { default: getConversations } = await import("../../../actions/getConversations.js");
 
     const currentUser = await getCurrentUser();
     const users = await getUsers();
     const conversations = await getConversations();
 
-    console.log('conv'  + conversations)
+    console.log('conv', conversations);
 
-   return <SideBar users = {users} conversations={conversations} > {children}</SideBar>
+    return <SideBar users={users} conversations={conversations}>{children}</SideBar>;
 }

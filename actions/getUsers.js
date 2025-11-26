@@ -1,5 +1,3 @@
-import prisma from "../libe/prismadb.js";
-
 import getSession from "./getSession";
 
 const getUsers = async () => {
@@ -10,6 +8,7 @@ const getUsers = async () => {
     }
 
     try {
+        const { default: prisma } = await import("../libe/prismadb.js");
         const users = await prisma.user.findMany({
             orderBy: {
                 createdAt: 'desc',

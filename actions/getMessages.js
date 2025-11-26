@@ -1,9 +1,8 @@
-import prisma from '../libe/prismadb.js';
-
 async function getMessages(conversationId) {
     try {
-        console.log('Fetching messages for conversationId:', conversationId); // Логування ID
+        console.log('Fetching messages for conversationId:', conversationId);
 
+        const { default: prisma } = await import('../libe/prismadb.js');
         const messages = await prisma.message.findMany({
             where: {
                 conversationId: conversationId // фільтруємо по conversationId

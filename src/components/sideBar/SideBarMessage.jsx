@@ -1,7 +1,7 @@
 import MessageBox from '../allChats/MessageBox.jsx';
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
-import { pusherClient } from "../../../libe/pucher.js";
+import { pusherClient } from "../../../libe/pusherClient.js";
 
 export default function SideBarMessage({ conversations = [] }) { // Додаємо значення за замовчуванням
     const { data: session } = useSession();

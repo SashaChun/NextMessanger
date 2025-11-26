@@ -18,8 +18,7 @@ import Message from "../../../../components/allChats/ChatItem.jsx";
 import { IoMdPhotos } from "react-icons/io";
 import Form from "./Form.js";
 import { motion, AnimatePresence } from "framer-motion";
-import { pusherClient } from '../../../../../libe/pucher.js';
-import {find} from "lodash";
+import { pusherClient } from '../../../../../libe/pusherClient.js';
 
 export default function ChatId({ conversations, message }) {
     const pathName = usePathname();
@@ -53,7 +52,7 @@ export default function ChatId({ conversations, message }) {
 
         const messageHandler = (message) => {
             setMessages((current) => {
-                if (find(current, { id: message.id })) {
+                if (current.find(msg => msg.id === message.id)) {
                     return current; // Якщо повідомлення вже є, не додаємо нове
                 }
                 return [...current, message];

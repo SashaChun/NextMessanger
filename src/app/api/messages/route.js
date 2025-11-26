@@ -1,10 +1,13 @@
-import getCurrentUser from "../../../../actions/getCurrantUser.js";
 import { NextResponse } from "next/server";
-import prisma from "../../../../libe/prismadb.js";
-import {pusherServer}  from "../../../../libe/pucher.js";
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
     try {
+        const { default: getCurrentUser } = await import("../../../../actions/getCurrantUser.js");
+        const { default: prisma } = await import("../../../../libe/prismadb.js");
+        const { pusherServer } = await import("../../../../libe/pucher.js");
+        
         const currentUser = await getCurrentUser();
         const body = await request.json();
         const {
@@ -67,15 +70,16 @@ export async function POST(request) {
 
         await pusherServer.trigger(conversationId , "messages:new" , newMessage);
 
-
         const lastMessage = updatedConversation.messages[updatedConversation.messages.length - 1];
 
-        updatedConversation.users.map((event)=>{
-            pusherServer.trigger(event.email , "conversation:new" , {
-                id : conversationId,
-                lastMessage : [lastMessage]
-            });
-        })
+        await Promise.all(
+            updatedConversation.users.map((event)=>
+                pusherServer.trigger(event.email , "conversation:new" , {
+                    id : conversationId,
+                    lastMessage : [lastMessage]
+                })
+            )
+        );
 
         return NextResponse.json(newMessage);
     } catch (error) {
