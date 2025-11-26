@@ -102,7 +102,7 @@ function AuthForm() {
                     errors={errors}
                 />
 
-                <div className={'lassName="mt-4 flex space-x-3'}>
+                <div className="mt-4 flex space-x-3">
                     <Buttons disable={isLoading} type="submit">
                         {loginVariant === 'LOGIN' ? 'Sign In' : 'Register'}
                     </Buttons>
