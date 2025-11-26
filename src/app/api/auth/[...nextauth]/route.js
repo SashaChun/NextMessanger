@@ -1,9 +1,10 @@
 export const dynamic = 'force-dynamic';
 
-async function auth(req, context) {
+async function handler(req, context) {
     const { default: NextAuth } = await import('next-auth');
-    const { authOptions } = await import('../../../../../libe/authOptions.js');
-    return NextAuth(req, context, authOptions);
+    const { getAuthOptions } = await import('../../../../../libe/authOptions.js');
+    const authOptions = await getAuthOptions();
+    return NextAuth(authOptions)(req, context);
 }
 
-export { auth as GET, auth as POST };
+export { handler as GET, handler as POST };
