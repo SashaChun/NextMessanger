@@ -19,7 +19,7 @@ import { IoMdPhotos } from "react-icons/io";
 import Form from "./Form.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { pusherClient } from '../../../../../libe/pucher.js';
-import {find} from "loadsh/collection.js";
+import {find} from "lodash";
 
 export default function ChatId({ conversations, message }) {
     const pathName = usePathname();
